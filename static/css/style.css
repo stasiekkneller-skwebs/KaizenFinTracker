@@ -1,0 +1,39 @@
+:root {
+  --lightgrey-bg-color: #f7f7f7;
+  --text-color: #333;
+  --headings-color: #121212;
+  --green-accent: #4CAF50;
+  --green-sec-accent: #88B04B;
+  --red-accent:#F44336;
+}
+
+
+body {
+    font-family: "Manrope", sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: "Exo 2", sans-serif;
+}
+
+.container{
+    width: 100%;
+    max-width: 1200px;
+    margin:0 auto;
+}
+
+.inner-container-flex{
+    display: flex;
+}
+
+.button, button.button{
+    border-radius: 40px !important;
+    border: 1px solid !important;
+    padding: 10px 20px !important;
+}
+
+.button.button-green{
+    border-color: var(--green-accent);
+    background-color: var(--green-accent);
+    color: white;
+}

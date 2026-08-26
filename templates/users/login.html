@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Logowanie{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card border-0 shadow-sm p-4">
+                <h4 class="mb-4">Logowanie</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-dark w-100 mt-2">Zaloguj się</button>
+                </form>
+                
+                <strong>Nie masz konta? <a href="{% url 'register' %}">Zarejestruj się</a></strong>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

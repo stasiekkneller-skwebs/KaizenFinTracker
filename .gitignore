@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Środowisko wirtualne
+venv/
+env/
+ENV/
+.venv/
+
+# Zmienne środowiskowe / sekrety
+.env
+.env.*
+!.env.example
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+/static_root
+
+# Migracje (opcjonalnie - zwykle NIE ignorujemy, zostaw zakomentowane)
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# IDE / edytory
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Testy / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Dystrybucja / paczki
+build/
+dist/
+*.egg-info/

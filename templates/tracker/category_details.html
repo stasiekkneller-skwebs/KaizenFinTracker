@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block title %}Kategoria: {{category.name}}{% endblock %}
+
+{% block content %}
+    <div style="background-color: {{category.color}}; max-width: 120px;">{{category.id}} -- {{category.name}}</div>
+{% endblock %}

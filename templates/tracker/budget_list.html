@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Budżety{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">
+    {% if not month and not year %}
+        Lista wszystkich budżetów
+    {% elif year and not month %}
+        Lista budżetów na rok {{ year }}
+    {% else %}
+        Lista budżetów na: {{ month }} {{ year }}
+    {% endif %}
+</h4>
+
+        <a href="{% url 'add-budget' %}" class="btn btn-sm btn-primary">+ Dodaj budżet</a>
+    </div>
+
+    <!-- FILTRY -->
+    <form method="get" class="d-flex gap-2 mb-4">
+        <select name="year" class="form-select form-select-sm" style="max-width: 140px;">
+            <option value="">Wszystkie lata</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+        </select>
+        <select name="month" class="form-select form-select-sm" style="max-width: 160px;">
+            <option value="">Wszystkie miesiące</option>
+            <option value="1">Styczeń</option>
+            <option value="2">Luty</option>
+            <option value="3">Marzec</option>
+            <option value="4">Kwiecień</option>
+            <option value="5">Maj</option>
+            <option value="6">Czerwiec</option>
+            <option value="7">Lipiec</option>
+            <option value="8">Sierpień</option>
+            <option value="9">Wrzesień</option>
+            <option value="10">Październik</option>
+            <option value="11">Listopad</option>
+            <option value="12">Grudzień</option>
+        </select>
+        <button class="btn btn-sm btn-dark" type="submit">Filtruj</button>
+    </form>
+
+    <div class="row g-3">
+        {% for item in budgets_with_progress %}
+        <div class="col-md-6">
+            <div class="card border-0 p-3">
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge" style="background-color: {{ item.budget.category.color }}; color: white;">
+                        {{ item.budget.category }}
+                    </span>
+                    <small class="text-muted">{{ item.budget.month }}/{{ item.budget.year }}</small>
+                </div>
+
+                <div class="d-flex justify-content-between mb-1">
+                    <small class="text-muted">{{ item.spent }} zł / {{ item.budget.limit }} zł</small>
+                    <small class="{% if item.exceeded %}text-danger fw-bold{% else %}text-muted{% endif %}">
+                        {{ item.percent }}%
+                    </small>
+                </div>
+
+                <div class="progress mb-3" style="height: 8px;">
+                    <div class="progress-bar {% if item.exceeded %}bg-danger{% elif item.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                         role="progressbar"
+                         style="width: {{ item.percent }}%;"></div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a href="{% url 'update-budget' item.budget.id %}" class="btn btn-sm btn-outline-dark">Edytuj</a>
+                    <a href="{% url 'delete-budget' item.budget.id %}"
+                       class="btn btn-sm btn-outline-danger"
+                       onclick="return confirm('Czy na pewno chcesz usunąć ten budżet?')">Usuń</a>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="card border-0 text-center text-muted py-4">
+                Nie masz jeszcze żadnego budżetu.
+                <a href="{% url 'add-budget' %}">Dodaj pierwszy</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

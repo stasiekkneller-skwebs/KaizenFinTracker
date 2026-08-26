@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+{% if over_categories %}
+<div class="alert alert-danger">
+    Przekroczyłeś budżet w kategoriach: <strong>{{ over_categories|join:", " }}</strong>
+</div>
+{% endif %}
+<div class="container py-4">
+
+    <!-- PODSUMOWANIE -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 p-3 text-center bg-light-red">
+                <small class="text-muted">Wydatki</small>
+                <strong style="color: #c8481a; font-size: 1.4rem;">{{ total_expenses }} zł</strong>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 p-3 text-center bg-light-green">
+                <small class="text-muted">Przychody</small>
+                <strong style="color: #238b45; font-size: 1.4rem;">{{ total_incomes }} zł</strong>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 text-center outlined-box">
+                <small class="text-muted">Saldo</small>
+                <strong style="font-size: 1.4rem; color: {% if balance < 0 %}#c8481a{% else %}#000000{% endif %};">
+    {{ balance }} zł
+</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- SZYBKIE AKCJE -->
+    <div class="d-flex gap-2 mb-4">
+        <a href="{% url 'add-transaction' %}" class="btn btn-sm btn-primary">+ Transakcja</a>
+        <a href="{% url 'all-transactions' %}" class="btn btn-sm btn-outline-dark">Wszystkie transakcje</a>
+        <a href="{% url 'add-category' %}" class="btn btn-sm btn-primary">+ Kategoria</a>
+        <a href="{% url 'all-categories' %}" class="btn btn-sm btn-outline-dark">Wszystkie kategorie</a>
+    </div>
+
+    <!-- WYKRES -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card border-0 p-4">
+                <h5 class="mb-3">Wydatki wg kategorii</h5>
+                <canvas id="expenseChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{{ chart_labels|json_script:"chart-labels" }}
+{{ chart_colors|json_script:"chart-colors" }}
+{{ chart_data|json_script:"chart-data" }}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const ctx = document.getElementById('expenseChart');
+    const labels = JSON.parse(document.getElementById('chart-labels').textContent);
+    const data = JSON.parse(document.getElementById('chart-data').textContent);
+    const colors = JSON.parse(document.getElementById('chart-colors').textContent);
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Wydatki (zł)',
+                data: data,
+                backgroundColor: colors
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value + ' zł';
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

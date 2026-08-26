@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Dodaj transakcję{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-3">Ustaw budżet</button>
+    </form>
+</div>
+{% endblock %}
+
+
+<!---dodaj budżety zbiorczo-->
+<!-- zaczytaj z excela -->

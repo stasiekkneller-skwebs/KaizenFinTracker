@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>Czy na pewno chcesz usunąć kategorię <strong>{{ transaction.name }} — {{ transaction.transaction_date }}</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Usuń</button>
+    <a href="/tracker/transactions/" class="btn btn-secondary">Anuluj</a>
+</form>
+{% endblock %}

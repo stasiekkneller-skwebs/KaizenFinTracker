@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Transakcja: {{ transaction.id }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">{{ transaction.name }}</h4>
+        <span class="badge" style="background-color: {{ transaction.category.color }}; font-size: 0.85rem; padding: 0.5rem 1rem;">
+            {{ transaction.category }}
+        </span>
+    </div>
+
+    <div class="card border-0">
+        <div class="card-body p-4">
+            <div class="row g-4"> 
+                
+                <div class="col-md-{% if transaction.receipt_image %}8{% else %}12{% endif %}">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <small class="text-muted d-block">Kwota</small>
+                            <strong style="color: {% if transaction.transaction_type == 'expense' %}#c8481a{% else %}#238b45{% endif %}; font-size: 1.4rem;">
+                                {{ transaction.display_amount }} zł
+                            </strong>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted d-block">Typ</small>
+                            <strong>{{ transaction.get_transaction_type_display }}</strong>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted d-block">Data transakcji</small>
+                            <strong>{{ transaction.transaction_date }}</strong>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted d-block">Data dodania</small>
+                            <strong>{{ transaction.created_at|date:"d.m.Y H:i" }}</strong>
+                        </div>
+
+                        {% if transaction.description %}
+                        <div class="col-12">
+                            <small class="text-muted d-block">Opis</small>
+                            <strong>{{ transaction.description }}</strong>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div> {% if transaction.receipt_image %}
+                <div class="col-md-4 text-center text-md-end">
+                    <small class="text-muted d-block mb-2">Paragon</small>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#lightboxModal">
+                        <img src="{{ transaction.receipt_image.url }}" 
+                             alt="Paragon" 
+                             class="img-thumbnail img-fluid" 
+                             style="max-height: 180px; cursor: pointer; object-fit: cover;">
+                    </a>
+                </div>
+                {% endif %}
+
+            </div> </div> </div> <div class="d-flex gap-2 mt-4">
+        <a href="{% url 'update-transaction' transaction.id %}" class="btn btn-sm btn-outline-dark">Edytuj</a>
+        <a href="{% url 'delete-transaction' transaction.id %}"
+           class="btn btn-sm btn-outline-danger"
+           on_submit="return confirm('Czy na pewno chcesz usunąć tę transakcję?')">Usuń</a>
+        <a href="{% url 'all-transactions' %}" class="btn btn-sm btn-outline-secondary">Wróć</a>
+    </div>
+
+</div>
+
+{% if transaction.receipt_image %}
+<div class="modal fade" id="lightboxModal" tabindex="-1" aria-labelledby="lightboxModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-header border-0 p-0 justify-content-end">
+                <button type="button" class="btn-close btn-close-white mb-2" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0 text-center">
+                <a href="{{ transaction.receipt_image.url }}" target="_blank" title="Otwórz pełny obraz w nowej karcie">
+                    <img src="{{ transaction.receipt_image.url }}" alt="Paragon Pełny Rozmiar" class="img-fluid rounded shadow-lg">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

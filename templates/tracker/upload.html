@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Import plików{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Importuj transakcje</h4>
+                <a href="{% url 'all-transactions' %}" class="btn btn-sm btn-outline-secondary">Wróć</a>
+            </div>
+
+            <div class="card border-0 shadow-sm p-4 mb-4">
+                <p class="text-muted mb-3">Akceptowane: CSV, Excel, PDF — max 5MB</p>
+                <form id="csv-dropzone" class="dropzone"
+                      action="/transactions/upload/"
+                      data-csrf="{{ csrf_token }}">
+                </form>
+            </div>
+
+            <!-- BŁĄD -->
+            <div id="import-error" class="mt-3" style="display:none;">
+                <div class="alert alert-danger mb-0" id="import-error-message"></div>
+            </div>
+
+            <!-- WYNIK -->
+            <div id="import-result" class="mt-3" style="display:none;">
+                <div class="alert alert-success mb-3">
+                    <strong>Import zakończony:</strong>
+                    <span id="import-summary"></span>
+                </div>
+
+                <div class="card border-0 shadow-sm">
+                    <table class="table table-hover table-sm mb-0">
+                        <thead style="background-color: #00441b; color: white;">
+                            <tr>
+                                <th>Data</th>
+                                <th>Nazwa</th>
+                                <th>Opis</th>
+                                <th>Kategoria</th>
+                                <th>Kwota</th>
+                                <th>Typ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="import-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
+<script src="{% static 'js/dropzone_config.js' %}"></script>
+{% endblock %}
