@@ -1,3 +1,9 @@
+:root {
+    --bs-primary: #005a32;
+    --link-color: #238b45;
+    --gray-bg: #fafafa;
+}
+
 h1, h2, h3 {
     font-family: 'Exo 2', sans-serif;
 }
@@ -7,8 +13,12 @@ body {
     font-family: 'Manrope', sans-serif;
 }
 
+a{
+    color: var(--link-color);
+}
+
 .card-auth {
-    background-color: #fafafa;
+    background-color: var(--gray-bg);
 }
 
 .form-auth p {
