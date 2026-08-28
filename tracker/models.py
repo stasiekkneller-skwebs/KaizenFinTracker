@@ -23,6 +23,9 @@ FREQUENCY_CHOICES = [
 ]
 
 class Category(models.Model):
+    class Meta: 
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -81,15 +84,7 @@ class Account(models.Model):
 
 
 
-class EmailReport(models.Model):
-    id = models.AutoField(primary_key=True)
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    frequency = models.CharField(max_length=10, choices=FREQUENCY_CHOICES)
-    is_active = models.BooleanField(default=False)
-    last_sent = models.DateTimeField(null=True)
+
 
 class Transaction(models.Model):
     id = models.AutoField(primary_key=True)

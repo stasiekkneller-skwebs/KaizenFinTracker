@@ -27,7 +27,7 @@
             <li class="nav-item"><a class="nav-link" href="{% url 'all-categories' %}">Kategorie</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'all-budgets' %}">Budżety</a></li>
             <li class="nav-item">
-                <form method="post" action="/user/logout/">
+                <form method="post" action="/users/logout/">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-link nav-link text-white">
                         Wyloguj ({{ request.user.username }})

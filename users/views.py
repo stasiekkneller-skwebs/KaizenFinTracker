@@ -42,4 +42,4 @@ class LogoutView(View):
     def post(self, request):
         logout(request)
         messages.success(self.request, 'Wylogowano')
-        return redirect('/user/login')
+        return redirect('login')

@@ -28,7 +28,7 @@ from datetime import date
 
 # Create your views here.
 class HomeView(TemplateView):
-    template_name = 'home.html'
+    template_name = 'tracker/home.html'
 
 class UploadFileView(LoginRequiredMixin, View):
     login_url = '/user/login/'

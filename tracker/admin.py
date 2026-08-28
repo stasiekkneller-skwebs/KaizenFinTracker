@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from .models import Category, Budget, Account, EmailReport, Transaction
+from .models import Category, Budget, Account, Transaction
 
 
 @admin.register(Category)
@@ -25,12 +25,6 @@ class AccountAdmin(admin.ModelAdmin):
     list_filter = ('account_type',)
     search_fields = ('name', 'user__username')
 
-
-@admin.register(EmailReport)
-class EmailReportAdmin(admin.ModelAdmin):
-    list_display = ('user', 'frequency', 'is_active', 'last_sent')
-    list_filter = ('frequency', 'is_active')
-    search_fields = ('user__username',)
 
 
 @admin.register(Transaction)
