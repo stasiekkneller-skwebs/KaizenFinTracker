@@ -1,7 +1,12 @@
 :root {
     --bs-primary: #005a32;
+    --bs-danger: #d32f2f;
     --link-color: #238b45;
     --gray-bg: #fafafa;
+    --gray-border: #dadada;
+    --text-color: #333;
+    --light-green-bg: #d1e1d6;
+    --light-red-bg: #f3d5d5;
 }
 
 h1, h2, h3 {
@@ -17,9 +22,35 @@ a{
     color: var(--link-color);
 }
 
+.btn{
+    border-radius: 0px;
+    padding: 8px 16px !important;
+}
+
+.btn-primary{
+    border: 1px solid var(--bs-primary);
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+.btn-primary:hover, .btn-primary:hover:focus {
+    border: 1px solid var(--bs-primary);
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+
+.card{
+    border-radius: 0px;
+}
+
+
+
 .card-auth {
     background-color: var(--gray-bg);
 }
+
+
 
 .form-auth p {
     display: flex;
@@ -31,6 +62,63 @@ a{
     margin-bottom: 4px;
 }
 
+input{
+    border: 1px solid var(--gray-border);
+    border-radius: 0px;
+    padding: 8px 16px;
+}
+
+input:focus{
+    border: 1px solid var(--link-color) !important;
+    border-radius: 0px !important;
+    outline: none;
+}
+
+.errorlist li{
+    color: var(--bs-danger);
+}
+
 .form-auth input {
     width: 100%;
+     
 }
+
+.filter-form select.filter-select{
+    margin-right: 10px;
+    padding: 4px 16px;       
+    border-radius: 0px;
+    width: 23%;
+}            
+
+.filter-form button{
+    margin-right: 20px;
+}
+
+.bg-light-red{
+    background-color: var(--light-red-bg);
+}
+
+.bg-light-green{
+    background-color: var(--light-green-bg);
+}
+
+.login-btn{
+    background-color: var(--link-color);
+    color: white;
+    border: 1px solid var(--link-color);
+}
+
+
+
+.login-btn:hover{
+    color: var(--link-color);
+    border: 1px solid var(--link-color);
+}
+
+nav .login-btn:hover{
+    color: white;
+    border-color: transparent;
+}
+
+
+

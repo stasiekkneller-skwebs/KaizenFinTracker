@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <form method="get" class="filter-form">
+    <form method="get" class="filter-form w-100">
 
     <select name="type" class="filter-select">
         <option value="">Wszystkie typy</option>
@@ -53,13 +53,27 @@
         <option value="11" {% if request.GET.month == '11' %}selected{% endif %}>Listopad</option>
         <option value="12" {% if request.GET.month == '12' %}selected{% endif %}>Grudzień</option>
     </select>
-
-    <button class="button button-green" type="submit">Filtruj</button>
+<br/>
+<div class="filter-form-inner mt-2">
+    <button class="btn btn-primary" type="submit">Filtruj</button>
     <a href="?" class="button button-green-outline">Wyczyść</a>
-
+</div>
 </form>
-
-    <div class="card border-0 mb-4">
+<div class="row g-3 mt-1">
+        <div class="col-md-3 ">
+            <div class="card border-0 p-3 text-center bg-light-red">
+                <small class="text-muted">Wydatki</small>
+                <strong style="font-size: 1.2rem;" class="red-text">{{ total_expenses }} zł</strong>
+            </div>
+        </div>
+        <div class="col-md-3 ">
+            <div class="card border-0 p-3 text-center bg-light-green">
+                <small class="text-muted">Przychody</small>
+                <strong style="font-size: 1.2rem;" class="green-text">{{ total_incomes }} zł</strong>
+            </div>
+        </div>
+    </div>
+    <div class="card border-0 mb-4 mt-4">
         <div style="overflow-x: auto;">
             <table class="table table-hover mb-0">
                 <thead style="background-color: #00441b; color: white;">
@@ -114,20 +128,7 @@
         </div>
     </div>
 
-    <div class="row g-3">
-        <div class="col-md-3 ">
-            <div class="card border-0 p-3 text-center bg-light-red">
-                <small class="text-muted">Wydatki</small>
-                <strong style="font-size: 1.2rem;" class="red-text">{{ total_expenses }} zł</strong>
-            </div>
-        </div>
-        <div class="col-md-3 ">
-            <div class="card border-0 p-3 text-center bg-light-green">
-                <small class="text-muted">Przychody</small>
-                <strong style="font-size: 1.2rem;" class="green-text">{{ total_incomes }} zł</strong>
-            </div>
-        </div>
-    </div>
+    
 
 </div>
 {% endblock %}
