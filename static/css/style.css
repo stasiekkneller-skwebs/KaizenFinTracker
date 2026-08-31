@@ -52,7 +52,7 @@ a{
 
 
 
-.form-auth p {
+.form-auth p, .app-form p {
     display: flex;
     flex-direction: column;
     margin-bottom: 16px;
@@ -78,10 +78,11 @@ input:focus{
     color: var(--bs-danger);
 }
 
-.form-auth input {
+.form-auth input , .app-form input{
     width: 100%;
      
 }
+
 
 .filter-form select.filter-select{
     margin-right: 10px;
@@ -89,6 +90,12 @@ input:focus{
     border-radius: 0px;
     width: 23%;
 }            
+
+select{
+    padding: 4px 16px;       
+    border-radius: 0px;
+    border: 1px solid var(--gray-border);
+}
 
 .filter-form button{
     margin-right: 20px;
