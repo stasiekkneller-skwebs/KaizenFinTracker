@@ -42,6 +42,7 @@
         <a href="{% url 'all-categories' %}" class="btn btn-sm btn-outline-dark">Wszystkie kategorie</a>
     </div>
 
+    {% if total_expenses > 0 %}
     <!-- WYKRES -->
     <div class="row">
         <div class="col-md-8">
@@ -51,6 +52,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
 </div>
 
