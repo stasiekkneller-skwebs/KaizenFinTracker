@@ -40,6 +40,7 @@ class CategoryUpdateForm(forms.ModelForm):
 
         self.fields['name'].label = 'Nazwa kategorii'
         self.fields['color'].label = 'Kolor tagu'
+        self.fields['name'].disabled = True
 
 
 

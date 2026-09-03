@@ -40,6 +40,11 @@ a{
 }
 
 
+#id_color{
+    padding: 2px;
+    max-width: 80px;
+}
+
 .card{
     border-radius: 0px;
 }
@@ -130,7 +135,22 @@ nav .login-btn:hover{
 
 .info-img{
     width: 100%;
-    max-width: 300px;
+    max-width: 450px;
+}
+
+.badge{
+    padding: 8px 16px;
+    border-radius: 40px;
+    font-weight: 400;
 }
 
 
+.expenses-table th{
+    background-color: var(--bs-primary);
+    color: white;
+    padding:8px 12px;
+}
+
+.table-icon{
+    width: 20px;
+}

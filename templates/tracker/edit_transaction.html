@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Edytuj transakcję{% endblock %}
-
 {% block content %}
-    <div class="container">
-    <form method="post">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card border p-4 card-auth">
+                <form method="post" enctype="multipart/form-data" class="app-form">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary mt-3">Edytuj transakcję</button>
+        <button type="submit" class="btn btn-primary mt-3">Dodaj transackę</button>
     </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
