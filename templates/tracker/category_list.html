@@ -42,12 +42,13 @@
                         </td>
                 </tr>
                 {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center text-muted py-4">
-                        Nie masz jeszcze żadnej kategorii.
-                        <a href="{% url 'add-category' %}">Dodaj pierwszą</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <img class="info-img info-img-mini" src="{% static 'img/no-categories.png' %}" alt="Logo">
+                            <p>Nie masz jeszcze żadnych kategorii.
+                            <a href="{% url 'add-transaction' %}">Dodaj pierwszą</a></p>
+                        </td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>

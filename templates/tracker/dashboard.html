@@ -15,20 +15,20 @@
         <div class="col-md-3">
             <div class="card border-0 p-3 text-center bg-light-red">
                 <small class="text-muted">Wydatki</small>
-                <strong style="color: #c8481a; font-size: 1.4rem;">{{ total_expenses }} zł</strong>
+                <strong style="color: #c8481a; font-size: 1.4rem;">{{ total_expenses|floatformat:2 }} zł</strong>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card border-0 p-3 text-center bg-light-green">
                 <small class="text-muted">Przychody</small>
-                <strong style="color: #238b45; font-size: 1.4rem;">{{ total_incomes }} zł</strong>
+                <strong style="color: #238b45; font-size: 1.4rem;">{{ total_incomes|floatformat:2 }} zł</strong>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 text-center outlined-box">
                 <small class="text-muted">Saldo</small>
                 <strong style="font-size: 1.4rem; color: {% if balance < 0 %}#c8481a{% else %}#000000{% endif %};">
-    {{ balance }} zł
+    {{ balance|floatformat:2 }} zł
 </strong>
             </div>
         </div>

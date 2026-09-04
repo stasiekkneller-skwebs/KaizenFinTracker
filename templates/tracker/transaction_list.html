@@ -65,13 +65,13 @@
         <div class="col-md-2 ">
             <div class="card border-0 p-3 text-center bg-light-red">
                 <small class="text-muted">Wydatki</small>
-                <strong style="font-size: 1.2rem;" class="red-text">{{ total_expenses }} zł</strong>
+                <strong style="font-size: 1.2rem;" class="red-text">{{ total_expenses|floatformat:2 }} zł</strong>
             </div>
         </div>
         <div class="col-md-2 ">
             <div class="card border-0 p-3 text-center bg-light-green">
                 <small class="text-muted">Przychody</small>
-                <strong style="font-size: 1.2rem;" class="green-text">{{ total_incomes }} zł</strong>
+                <strong style="font-size: 1.2rem;" class="green-text">{{ total_incomes|floatformat:2 }} zł</strong>
             </div>
         </div>
     </div>
