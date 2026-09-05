@@ -86,9 +86,12 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     login_url = '/user/login/'
     template_name = 'tracker/dashboard.html'
 
+    def _get_curr_date(self):
+        return datetime.now()
+
     def _get_curr_year_and_month(self):
-        year = datetime.now().year
-        month = datetime.now().month 
+        year = self._get_curr_date().year
+        month = self._get_curr_date().month 
         return year, month
     
     def get_queryset(self):
@@ -103,6 +106,13 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         expense = qs.filter(transaction_type='expense').aggregate(total=Sum('amount'))['total'] or 0
         income = qs.filter(transaction_type='income').aggregate(total=Sum('amount'))['total'] or 0
         return expense, income
+
+    def _get_sum_of_today_transactions(self):
+        qs = self.get_queryset()
+        today = self._get_curr_date()
+        today_expenses = qs.filter(transaction_type='expense', transaction_date =today).aggregate(total=Sum('amount'))['total'] or 0
+        today_incomes = qs.filter(transaction_type='income' , transaction_date =today).aggregate(total=Sum('amount'))['total'] or 0
+        return today_expenses, today_incomes
     
     def _get_budgets(self):
         year, month = self._get_curr_year_and_month()
@@ -124,7 +134,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.filter(user=self.request.user)
         expenses, incomes = self._get_sum_of_transactions()
-        context['total_expenses'] = -expenses
+        today_expenses, today_incomes = self._get_sum_of_today_transactions()
+        context['today_expenses'] = today_expenses
+        context['today_incomes'] = today_incomes
+        context['total_expenses'] = expenses
         context['total_incomes'] = incomes
         context['balance'] = incomes - expenses
         context['budgets'] = self._get_budgets()

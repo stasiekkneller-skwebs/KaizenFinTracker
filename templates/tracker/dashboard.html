@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -9,25 +10,23 @@
 </div>
 {% endif %}
 <div class="container py-4">
-
-    <!-- PODSUMOWANIE -->
     <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <div class="card border-0 p-3 text-center bg-light-red">
+        <div class="col-md-4">
+            <div class="card p-3 text-center outlined-box">
                 <small class="text-muted">Wydatki</small>
-                <strong style="color: #c8481a; font-size: 1.4rem;">{{ total_expenses|floatformat:2 }} zł</strong>
+                <strong>{{ total_expenses|floatformat:2 }} zł</strong>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card border-0 p-3 text-center bg-light-green">
+        <div class="col-md-4">
+            <div class="card p-3 text-center outlined-box">
                 <small class="text-muted">Przychody</small>
-                <strong style="color: #238b45; font-size: 1.4rem;">{{ total_incomes|floatformat:2 }} zł</strong>
+                <strong>{{ total_incomes|floatformat:2 }} zł</strong>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card p-3 text-center outlined-box">
                 <small class="text-muted">Saldo</small>
-                <strong style="font-size: 1.4rem; color: {% if balance < 0 %}#c8481a{% else %}#000000{% endif %};">
+                <strong>
     {{ balance|floatformat:2 }} zł
 </strong>
             </div>
@@ -41,19 +40,70 @@
         <a href="{% url 'add-category' %}" class="btn btn-sm btn-primary">+ Kategoria</a>
         <a href="{% url 'all-categories' %}" class="btn btn-sm btn-outline-dark">Wszystkie kategorie</a>
     </div>
-
+</div>
+<div class="container py-4">
     {% if total_expenses > 0 %}
     <!-- WYKRES -->
     <div class="row">
-        <div class="col-md-8">
-            <div class="card border-0 p-4">
+        <div class="col-md-6 d-flex" >
+            <div class="card border-0" >
                 <h5 class="mb-3">Wydatki wg kategorii</h5>
-                <canvas id="expenseChart"></canvas>
+                <canvas  id="expenseChart" style="max-height: 250px !important;"></canvas>
             </div>
+             <ul id="customLegend" style="list-style:none; padding:0; margin:0;"></ul>
+        </div>
+        <div class="col-md-6">
+            <div style="overflow-x: auto;">
+            <table class="table table-hover mb-0">
+                <thead >
+                    <tr class="expenses-table">
+                        <th>Data</th>
+                        <th>Nazwa</th>
+                        <th>Kategoria</th>
+                        <th>Kwota</th>
+                        <th class="text-center" colspan="2">Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td class="text-muted">{{ transaction.transaction_date|date:"d.m.Y" }}</td>
+                        <td>{{ transaction.name }}</td>
+                        <td>
+                            <span class="badge"
+      style="background-color: {{ transaction.category.color|default:'#e0e0e0' }}; 
+             color: {% if transaction.category.color %}white{% else %}#111{% endif %};">
+    {{ transaction.category }}
+</span>
+                        </td>
+                        <td style="color: {% if transaction.transaction_type == 'expense' %}#c8481a{% else %}#238b45{% endif %}; font-weight: 600;">
+                            {{ transaction.display_amount }} zł
+                        </td>
+                        <td class="text-center">
+                            <a data-bs-toggle="tooltip" data-bs-title="Zobacz transakcję" href="{% url 'transaction-details' transaction.id %}"
+                               class="dark-text actions-icon mx-2"> <img class="table-icon" src="{% static 'img/eye.svg' %}" alt="Logo">
+</a>
+ <a class="dark-text actions-icon"  data-bs-toggle="tooltip" data-bs-title="Usuń wydatek" href="{% url 'delete-transaction' transaction.id %}"
+                                
+                               onclick="return confirm('Czy na pewno chcesz usunąć tę transakcję?')"><img class="table-icon" src="{% static 'img/remove.svg' %}" alt="Logo"></a>
+                        </td>
+                        
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <img class="info-img" src="{% static 'img/no-transactions.png' %}" alt="Logo">
+                            <p>Nie masz jeszcze żadnych transakcji.
+                            <a href="{% url 'add-transaction' %}">Dodaj pierwszą</a></p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         </div>
     </div>
     {% endif %}
-
 </div>
 
 {{ chart_labels|json_script:"chart-labels" }}
@@ -63,37 +113,61 @@
 
 {% block scripts %}
 <script>
-    const ctx = document.getElementById('expenseChart');
-    const labels = JSON.parse(document.getElementById('chart-labels').textContent);
-    const data = JSON.parse(document.getElementById('chart-data').textContent);
-    const colors = JSON.parse(document.getElementById('chart-colors').textContent);
 
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Wydatki (zł)',
-                data: data,
-                backgroundColor: colors
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return value + ' zł';
-                        }
+const ctx = document.getElementById('expenseChart');
+const labels = JSON.parse(document.getElementById('chart-labels').textContent);
+const data = JSON.parse(document.getElementById('chart-data').textContent);
+const colors = JSON.parse(document.getElementById('chart-colors').textContent);
+
+const chart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            data: data,
+            backgroundColor: colors,
+            borderColor: '#ffffff',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const value = context.parsed;
+                        return `${context.label}: ${value.toLocaleString('pl-PL')} zł`;
                     }
                 }
             }
         }
-    });
+    }
+});
+
+// Customowa legenda pasująca do wyglądu ze screena
+const legendContainer = document.getElementById('customLegend');
+labels.forEach((label, i) => {
+    const li = document.createElement('li');
+    li.style.display = 'flex';
+    li.style.justifyContent = 'space-between';
+    li.style.alignItems = 'center';
+    li.style.gap = '24px';
+    li.style.padding = '10px 0';
+    li.style.borderBottom = '1px solid #eee';
+
+    li.innerHTML = `
+        <span style="display:flex; align-items:center; gap:8px;">
+            <span style="width:10px; height:10px; border-radius:50%; background:${colors[i]}; display:inline-block;"></span>
+            ${label}
+        </span>
+        <span style="font-weight:600;">${data[i].toLocaleString('pl-PL')} zł</span>
+    `;
+    legendContainer.appendChild(li);
+});
+
 </script>
 {% endblock %}
