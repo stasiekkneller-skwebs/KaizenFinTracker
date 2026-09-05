@@ -32,25 +32,19 @@
             </div>
         </div>
     </div>
-
-    <!-- SZYBKIE AKCJE -->
-    <div class="d-flex gap-2 mb-4">
-        <a href="{% url 'add-transaction' %}" class="btn btn-sm btn-primary">+ Transakcja</a>
-        <a href="{% url 'all-transactions' %}" class="btn btn-sm btn-outline-dark">Wszystkie transakcje</a>
-        <a href="{% url 'add-category' %}" class="btn btn-sm btn-primary">+ Kategoria</a>
-        <a href="{% url 'all-categories' %}" class="btn btn-sm btn-outline-dark">Wszystkie kategorie</a>
-    </div>
-</div>
 <div class="container py-4">
     {% if total_expenses > 0 %}
     <!-- WYKRES -->
     <div class="row">
-        <div class="col-md-6 d-flex" >
-            <div class="card border-0" >
-                <h5 class="mb-3">Wydatki wg kategorii</h5>
-                <canvas  id="expenseChart" style="max-height: 250px !important;"></canvas>
+        
+        <div class="col-md-6 d-flex bg-light py-4" >
+            <div class="card border-0 col-md-6 bg-light" >
+                <h5 class="mb-3 text-center">Wydatki według kategorii</h5>
+                <canvas  id="expenseChart" style="max-height: 250px !important;" ></canvas>
             </div>
+            <div class="col-md-4 chart-legend-box">
              <ul id="customLegend" style="list-style:none; padding:0; margin:0;"></ul>
+             </div>
         </div>
         <div class="col-md-6">
             <div style="overflow-x: auto;">
@@ -156,15 +150,14 @@ labels.forEach((label, i) => {
     li.style.justifyContent = 'space-between';
     li.style.alignItems = 'center';
     li.style.gap = '24px';
-    li.style.padding = '10px 0';
-    li.style.borderBottom = '1px solid #eee';
+    li.style.padding = '4px 0';
 
     li.innerHTML = `
         <span style="display:flex; align-items:center; gap:8px;">
             <span style="width:10px; height:10px; border-radius:50%; background:${colors[i]}; display:inline-block;"></span>
             ${label}
         </span>
-        <span style="font-weight:600;">${data[i].toLocaleString('pl-PL')} zł</span>
+        <span style="font-weight:600;">${Number(data[i]).toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł</span>
     `;
     legendContainer.appendChild(li);
 });

@@ -158,3 +158,10 @@ nav .login-btn:hover{
 .table-icon{
     width: 20px;
 }
+
+.chart-legend-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
