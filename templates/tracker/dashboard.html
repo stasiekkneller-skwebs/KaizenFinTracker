@@ -9,7 +9,9 @@
     Przekroczyłeś budżet w kategoriach: <strong>{{ over_categories|join:", " }}</strong>
 </div>
 {% endif %}
+{% if  total_expenses > 0 or total_incomes > 0 %}
 <div class="container py-4">
+
     <div class="row g-3 mb-4">
         <div class="col-md-4">
             <div class="card p-3 text-center outlined-box">
@@ -24,29 +26,33 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card p-3 text-center outlined-box">
+            <div class="card p-3 text-center outlined-box {% if balance > 0 %} bg-light-green {% else %} bg-light-red {% endif %}">
                 <small class="text-muted">Saldo</small>
-                <strong>
+                <strong class="{% if balance > 0 %} green-text {% else %} red-text {% endif %}">
     {{ balance|floatformat:2 }} zł
 </strong>
             </div>
         </div>
     </div>
+    </div>
+{% endif %}    
 <div class="container py-4">
     {% if total_expenses > 0 %}
     <!-- WYKRES -->
     <div class="row">
         
-        <div class="col-md-6 d-flex bg-light py-4" >
-            <div class="card border-0 col-md-6 bg-light" >
+        <div class="col-md-5 d-flex flex-wrap bg-light py-4" >
+            <div class="col-md-12">
                 <h5 class="mb-3 text-center">Wydatki według kategorii</h5>
+            </div>
+            <div class="card border-0 col-md-6 bg-light" >
                 <canvas  id="expenseChart" style="max-height: 250px !important;" ></canvas>
             </div>
-            <div class="col-md-4 chart-legend-box">
+            <div class="col-md-6 chart-legend-box">
              <ul id="customLegend" style="list-style:none; padding:0; margin:0;"></ul>
              </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-7">
             <div style="overflow-x: auto;">
             <table class="table table-hover mb-0">
                 <thead >
@@ -59,7 +65,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for transaction in transactions %}
+                    {% for transaction in last_transactions %}
                     <tr>
                         <td class="text-muted">{{ transaction.transaction_date|date:"d.m.Y" }}</td>
                         <td>{{ transaction.name }}</td>
@@ -70,7 +76,7 @@
     {{ transaction.category }}
 </span>
                         </td>
-                        <td style="color: {% if transaction.transaction_type == 'expense' %}#c8481a{% else %}#238b45{% endif %}; font-weight: 600;">
+                        <td style="color: {% if transaction.transaction_type == 'expense' %}#c8481a{% else %}#238b45{% endif %}; font-weight: 500;">
                             {{ transaction.display_amount }} zł
                         </td>
                         <td class="text-center">
@@ -149,7 +155,7 @@ labels.forEach((label, i) => {
     li.style.display = 'flex';
     li.style.justifyContent = 'space-between';
     li.style.alignItems = 'center';
-    li.style.gap = '24px';
+    li.style.gap = '12px';
     li.style.padding = '4px 0';
 
     li.innerHTML = `
@@ -157,7 +163,7 @@ labels.forEach((label, i) => {
             <span style="width:10px; height:10px; border-radius:50%; background:${colors[i]}; display:inline-block;"></span>
             ${label}
         </span>
-        <span style="font-weight:600;">${Number(data[i]).toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł</span>
+        <span style="font-weight:600; font-size: 14px">${Number(data[i]).toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł</span>
     `;
     legendContainer.appendChild(li);
 });

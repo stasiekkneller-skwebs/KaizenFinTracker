@@ -99,8 +99,12 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return Transaction.objects.filter(user=self.request.user, transaction_date__month=month,
             transaction_date__year=year)
 
-    
+    def _get_last_transactions(self):
+        no_of_last_transactions = 10
+        qs = self.get_queryset()
+        return qs.order_by('-transaction_date')[:no_of_last_transactions]
 
+    
     def _get_sum_of_transactions(self):
         qs = self.get_queryset()
         expense = qs.filter(transaction_type='expense').aggregate(total=Sum('amount'))['total'] or 0
@@ -135,6 +139,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['categories'] = Category.objects.filter(user=self.request.user)
         expenses, incomes = self._get_sum_of_transactions()
         today_expenses, today_incomes = self._get_sum_of_today_transactions()
+        context['last_transactions'] = self._get_last_transactions()
         context['today_expenses'] = today_expenses
         context['today_incomes'] = today_incomes
         context['total_expenses'] = expenses
